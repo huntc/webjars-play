@@ -15,6 +15,9 @@ import java.util.Arrays
 import scala.collection.immutable.TreeMap
 import org.webjars.WebJarAssetLocator
 import org.webjars.services.Route
+import play.api.mvc.PathBindable
+
+case class LocatedPath(file: String)
 
 /**
  * A Play framework controller that is able to resolve webjar paths.
@@ -47,6 +50,14 @@ class WebJarAssets extends Controller with RequirejsProducer {
    */
   def at(file: String): Action[AnyContent] = {
     Assets.at("/" + WebJarAssetLocator.WEBJARS_PATH_PREFIX, file)
+  }
+
+  /**
+   * A shortcut to retrieving the WebJar asset contents by using a binding to
+   * the locate method.
+   */
+  def at(locatedFile: LocatedPath): Action[AnyContent] = {
+    at(locatedFile.file)
   }
 
   /**
